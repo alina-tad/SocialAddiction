@@ -1,0 +1,6 @@
+framework module Pods_SocialAddiction {
+  umbrella header "Pods-SocialAddiction-umbrella.h"
+
+  export *
+  module * { export * }
+}

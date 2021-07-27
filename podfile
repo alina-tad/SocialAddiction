@@ -1,0 +1,24 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+use_frameworks!
+
+target 'SocialAddiction' do
+
+  # Networking
+
+  pod 'Alamofire', '~> 4.9.1'
+  pod 'Kingfisher', '~> 5.12.0'
+
+  # UI
+
+  pod 'SnapKit', '~> 5.0.0'
+  pod 'SwiftMessages', '~> 7.0.1'
+
+  # Utils
+
+  pod 'ObjectMapper', '~> 3.5.1'
+  pod 'SwiftyJSON', '~> 5.0.0'
+  pod 'KeychainAccess', '~> 4.1.0'
+  pod 'ReactiveSwift', '~> 6.1.0'
+
+end
