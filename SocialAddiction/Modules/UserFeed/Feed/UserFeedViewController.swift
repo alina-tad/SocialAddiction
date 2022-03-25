@@ -13,7 +13,7 @@ class UserFeedViewController: BaseViewController {
     //MARK: - Constants
     let listController = CollectionListBuilder()
     private let authNetworkingManager = AuthNetworking.shared
-    private let manager = UserFeedManager.shared
+    private let manager = UserFeedManager()
     private let mediaTypes = MediaTypes()
     
     
@@ -37,44 +37,32 @@ class UserFeedViewController: BaseViewController {
         view.backgroundColor = .systemBackground
         configureNavigationBar()
         fetchData()
-        fetchUserMedia()
         configureListController()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
-    
 
     //MARK: - Configure
     func configureListController() {
-        
-        let contentView = UIView()
-        view.addSubview(contentView)
-        
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.snp.removeConstraints()
-        contentView.snp.makeConstraints { target in
-            target.top.left.right.bottom.equalTo(0)
-        }
-        
-        listController.attach(contentView)
+
+        listController.attach(self.view)
         
         listController.actionHandler = { [weak self] (index) in
             guard let self = self else { return }
             self.navigator.navigate(to: .post(id: self.userMedia[index].id))
         }
         
-        listController.refreshActionHandler = {
+        listController.refreshActionHandler = { [weak self] in
+            guard let self = self else { return }
             self.resultsMedia = nil
             self.userMedia.removeAll()
+            self.listController.updateModels([])
             self.fetchUserMediaPortion(type: .before, code: self.resultsMedia?.paging?.cursors?.before ?? "")
         }
         
-        listController.paginationActionHandler = {
+        listController.paginationActionHandler = { [weak self] in
+            guard let self = self else { return }
             if !self.isLoading {
                 if self.userMedia.count != self.userData?.mediaCount {
+                    self.startLoader()
                     self.fetchUserMediaPortion(type: .after, code: self.resultsMedia?.paging?.cursors?.after ?? "")
                 }
             }
@@ -93,6 +81,7 @@ class UserFeedViewController: BaseViewController {
     private func configureNavigationBar() {
         self.edgesForExtendedLayout = UIRectEdge.bottom
         addRightNavItemText("Logout")
+        addLeftNavItemText("Clean cache")
     }
     
     
@@ -112,7 +101,8 @@ class UserFeedViewController: BaseViewController {
             }
             
         }
-
+        
+        fetchUserMedia()
     }
     
     private func fetchUserMedia() {
@@ -124,13 +114,10 @@ class UserFeedViewController: BaseViewController {
             self.isLoading = false
 
             if let error = error {
-                self.showError("\(ConstantTitles.UserFeed.faildToLoadMedia) \(error.localizedDescription)")
-                
-                /*
-                 if the error is related to the expiration of the token's validity period, then send a request for the token:  AuthNetworking.shared.getOauthToken(code: accessCode) {}.
-                 And call this method again
-                 */
-                
+                switch error {
+                case .validationTokenError: self.logout()
+                default: self.showError("\(ConstantTitles.UserFeed.failedToLoadMedia) \(error.string)")
+                }
             }
 
             self.resultsMedia = resp
@@ -145,7 +132,6 @@ class UserFeedViewController: BaseViewController {
     }
     
     private func fetchUserMediaPortion(type: PagingTypes, code: String) {
-        startLoader()
         isLoading = true
         manager.fetchUserMediaNextPortion(type: type, code: code) { [weak self] (resp, error)in
             guard let self = self else { return }
@@ -159,16 +145,24 @@ class UserFeedViewController: BaseViewController {
             self.resultsMedia = resp
             self.configureModels()
             
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { 
                 self.stopLoader()
             }
         }
     }
     
-    
     //MARK: - Actions
     
     override func rightItemAction(_ sender: Any) {
+        logout()
+    }
+    
+    override func leftItemAction(_ sender: Any) {
+        KingfisherManager.shared.cache.clearMemoryCache()
+        KingfisherManager.shared.cache.clearDiskCache()
+    }
+    
+    private func logout() {
         authNetworkingManager.removeUserData()
         navigator.navigate(to: .webView(url: URL(string: Endpoints.AuthParams.redirectUri) ?? URL(fileURLWithPath: "")))
     }

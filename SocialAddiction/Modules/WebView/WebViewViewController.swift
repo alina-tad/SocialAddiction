@@ -88,8 +88,8 @@ class WebViewViewController: BaseViewController, WKUIDelegate, WKNavigationDeleg
                 decisionHandler(.allow)
             }
         }
-        else
-        {
+        
+        else {
             decisionHandler(.allow)
         }
     }

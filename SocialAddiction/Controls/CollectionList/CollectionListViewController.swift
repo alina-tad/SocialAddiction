@@ -46,7 +46,7 @@ class CollectionListViewController: BaseViewController {
     //MARK: - Scroll
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        if ((scrollView.contentOffset.y + scrollView.frame.size.height) > scrollView.contentSize.height + 80)  && scrollView.contentOffset.y > 65 && refreshControl.isRefreshing == false {
+        if ((scrollView.contentOffset.y + scrollView.frame.size.height) > scrollView.contentSize.height + 10) && refreshControl.isRefreshing == false {
             paginationActivate.value = true
         } else { paginationActivate.value = false }
 
@@ -57,7 +57,8 @@ class CollectionListViewController: BaseViewController {
     private func paginationScrollActivate() {
         paginationActivate
             .producer
-            .startWithValues({ value in
+            .startWithValues({ [weak self] value in
+                guard let self = self else { return }
                 if value == true {
                     self.paginationActionHandler?()
                 }
@@ -68,7 +69,8 @@ class CollectionListViewController: BaseViewController {
         collectionView.dataSource = listDirector
         listDirector.collectionView = collectionView
         
-        listDirector.actionHandler = { index in
+        listDirector.actionHandler = { [weak self] index in
+            guard let self = self else { return }
             self.action?(index)
         }
         

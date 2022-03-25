@@ -10,15 +10,7 @@ import UIKit
 class PostDetailViewController: BaseViewController {
     
     //MARK: - Constants
-    private let manager = UserFeedManager.shared
-    
-    var preview: PreviewPostDetail? {
-        didSet {
-            if let preview = preview {
-                self.configureCells(form: preview)
-            }
-        }
-    }
+    private let manager = UserFeedManager()
     
     //MARK: - Properties
     private var tableView: UITableView!
@@ -32,6 +24,13 @@ class PostDetailViewController: BaseViewController {
         }
     }
     
+    private var preview: PreviewPostDetail? {
+        didSet {
+            if let preview = preview {
+                self.configureCells(form: preview)
+            }
+        }
+    }
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
@@ -75,7 +74,7 @@ class PostDetailViewController: BaseViewController {
             self.stopLoader()
             
             if let error = error {
-                self.showError("\(ConstantTitles.UserFeed.faildToLoadMedia) \(error.localizedDescription)")
+                self.showError("\(ConstantTitles.UserFeed.failedToLoadMedia) \(error.string)")
             }
 
             self.preview = PreviewPostDetail(resp)

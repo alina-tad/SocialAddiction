@@ -29,15 +29,18 @@ class CollectionListBuilder {
     fileprivate func build() {
         controller = CollectionListViewController.instance()
         
-        controller.action = { index in
+        controller.action = { [weak self] index in
+            guard let self = self else { return }
             self.actionHandler?(index)
         }
         
-        controller.refreshActionHandler = {
+        controller.refreshActionHandler = { [weak self] in
+            guard let self = self else { return }
             self.refreshActionHandler?()
         }
         
-        controller.paginationActionHandler = {
+        controller.paginationActionHandler = { [weak self] in
+            guard let self = self else { return }
             self.paginationActionHandler?()
         }
     }

@@ -33,11 +33,25 @@ class BaseViewController: UIViewController {
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = Constants.Colors.systemNavigationBarColor
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureNavigationBarColor()
     }
     
 
     //MARK: - Configure
+    func configureNavigationBarColor(_ color: UIColor = Constants.Colors.systemNavigationBarColor) {
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.backgroundColor = color
+        navBarAppearance.largeTitleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 24)]
+        UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).standardAppearance = navBarAppearance
+        UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).scrollEdgeAppearance = navBarAppearance
+    }
+    
     func startLoader() {
         stopLoader()
         
@@ -63,11 +77,20 @@ class BaseViewController: UIViewController {
         let item = UIButton()
         item.titleLabel?.font = UIFont(name: "System", size: 17)
         item.setTitle(title, for: .normal)
-        // FIXME: Add Dark Mode Supporting
         item.setTitleColor(Constants.Colors.systemTextColor, for: .normal)
         item.addTarget(self, action: #selector(rightItemAction(_:)), for: .touchUpInside)
         item.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.flexibleWidth.rawValue | UIView.AutoresizingMask.flexibleHeight.rawValue)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: item)
+    }
+    
+    func addLeftNavItemText(_ title: String) {
+        let item = UIButton()
+        item.titleLabel?.font = UIFont(name: "System", size: 17)
+        item.setTitle(title, for: .normal)
+        item.setTitleColor(Constants.Colors.systemTextColor, for: .normal)
+        item.addTarget(self, action: #selector(leftItemAction(_:)), for: .touchUpInside)
+        item.autoresizingMask = UIView.AutoresizingMask(rawValue: UIView.AutoresizingMask.flexibleWidth.rawValue | UIView.AutoresizingMask.flexibleHeight.rawValue)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: item)
     }
     
     
@@ -98,4 +121,6 @@ class BaseViewController: UIViewController {
     
     //MARK: - Actions
     @objc func rightItemAction(_ sender: Any) {}
+    @objc func leftItemAction(_ sender: Any) {}
+
 }

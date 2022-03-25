@@ -26,7 +26,8 @@ class SimpleNotificationView: UIView {
     
     //MARK: - Configure
     private func configureView() {
-        backView.backgroundColor = .secondarySystemBackground
+        backView.backgroundColor = .lightGray
+        backView.alpha = 0.7
         textLabel.textColor = Constants.Colors.systemTextColor
         backView.layer.cornerRadius = Constants.ViewSettings.popupRadius
     }

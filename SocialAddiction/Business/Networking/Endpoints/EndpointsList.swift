@@ -17,4 +17,8 @@ struct EndpointsList {
         static let meMedia: Endpoint<ResultMediaModel>          = Endpoint<ResultMediaModel>.make(Endpoints.Media.meMedia, .get)
     }
     
+    struct Auth {
+        static let getToken: Endpoint<AuthResponse>          = Endpoint<AuthResponse>.make(Endpoints.Auth.getToken, .post)
+    }
+    
 }

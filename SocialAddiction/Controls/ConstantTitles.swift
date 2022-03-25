@@ -13,7 +13,7 @@ struct ConstantTitles {
     
     struct UserFeed {
         static let logout = "Logout"
-        static let faildToLoadMedia = "Failed to load media."
+        static let failedToLoadMedia = "Failed to load media."
     }
     
 }

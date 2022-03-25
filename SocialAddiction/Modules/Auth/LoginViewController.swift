@@ -37,21 +37,13 @@ class LoginViewController: BaseViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        configureBackgroundView()
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        self.view.addGradient()
     }
     
     
     //MARK: - Configure
-    func configureBackgroundView() {
-        let gradient: CAGradientLayer = CAGradientLayer()
-        gradient.frame = self.view.bounds
-        gradient.locations = [0.0, 1.0]
-        gradient.colors = [UIColor.systemGreen.cgColor, UIColor.yellow.cgColor]
-        self.view.layer.insertSublayer(gradient, at: 0)
-    }
-    
     func configureButton() {
         self.view.addSubview(loginButton)
         loginButton.snp.makeConstraints { make in
@@ -72,13 +64,6 @@ class LoginViewController: BaseViewController {
             AuthNetworking.shared.authCode = accessCode
             AuthNetworking.shared.getOauthToken(code: accessCode) { [weak self] (resp, error) in
                 guard let self = self else { return }
-                
-                if let error = error {
-                    let errorMessage = "error_type: \(error.errorType ?? "-"), code: \(error.code ?? 0), error_message: \(error.errorMessage ?? "Something went wrong")"
-                    Popup.showSimpleNotificationView(errorMessage)
-                    print(errorMessage)
-                }
-                
                 if resp?.accessToken != nil {
                     self.navigator.navigate(to: .userFeed)
                 }

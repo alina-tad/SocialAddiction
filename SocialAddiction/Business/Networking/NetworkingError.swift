@@ -14,6 +14,7 @@ enum NetworkingError: Error {
     case noInternet
     case invalidData
     case unowned
+    case validationTokenError
 
     var string: String {
         switch self {

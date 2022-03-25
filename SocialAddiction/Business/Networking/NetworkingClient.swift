@@ -54,7 +54,12 @@ class NetworkingClient: NSObject {
                 }
             }
             
-            encoding = JSONEncoding.default
+            switch requestType {
+            case .auth:
+                encoding = URLEncoding.default
+            case .media:
+                encoding = JSONEncoding.default
+            }
             
         } else if endpoint.method == .get || endpoint.method == .delete {
             
@@ -132,6 +137,10 @@ extension NetworkingClient {
                     for element in errorArray {
                         let message = element["message"].string
                         return .networkingError(message ?? "Something went wrong")
+                    }
+                } else if let error = json["error"].dictionary {
+                    if let errorCode = error["code"]?.int, errorCode == 190 {
+                        return .validationTokenError
                     }
                 }
             } catch {

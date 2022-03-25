@@ -28,7 +28,8 @@ class CollectionListDirector: NSObject, UICollectionViewDataSource {
         
         self.cellBuilder.prepare(collectionView)
         
-        self.cellBuilder.actionHandler = { index in
+        self.cellBuilder.actionHandler = { [weak self] index in
+            guard let self = self else { return }
             self.actionHandler?(index)
         }
 

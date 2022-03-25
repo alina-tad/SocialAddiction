@@ -39,6 +39,15 @@ struct Constants {
             }
         }
         
+        static  let systemNavigationBarColor = UIColor { color in
+            switch color.userInterfaceStyle {
+            case .dark:
+                return UIColor.black
+            default:
+                return UIColor.white
+            }
+        }
+        
     }
     
 }
