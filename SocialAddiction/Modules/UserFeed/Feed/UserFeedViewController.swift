@@ -158,8 +158,7 @@ class UserFeedViewController: BaseViewController {
     }
     
     override func leftItemAction(_ sender: Any) {
-        KingfisherManager.shared.cache.clearMemoryCache()
-        KingfisherManager.shared.cache.clearDiskCache()
+        KFManager.cleanCache()
     }
     
     private func logout() {

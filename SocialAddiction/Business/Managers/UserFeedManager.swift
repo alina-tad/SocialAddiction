@@ -8,23 +8,12 @@
 import Foundation
 
 class UserFeedManager {
-    
-    // MARK: - Constants
-    public static let shared = UserFeedManager()
-    
-    
+
     //MARK: - Properties
     private var userFields = "id,username,media_count"
     private var limit = 19
     private var mediaFields = "caption,id,media_type,media_url,permalink,thumbnail_url,timestamp,username"
 
-    
-    // MARK: - Init
-    private init() {
-        
-    }
-    
-    
     // MARK: - Networking
     func fetchUser(_ completion: ((_ response: UserModel, _ error: NetworkingError?) -> Void)? = nil) {
         
@@ -37,9 +26,6 @@ class UserFeedManager {
             completion?(resp ?? UserModel(), error)
         }
     }
-    
-    
-    
     
     func fetchUserMedia(_ completion: ((_ response: ResultMediaModel, _ error: NetworkingError?) -> Void)? = nil) {
 
