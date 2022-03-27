@@ -54,9 +54,12 @@ class PostDetailTableViewCell: UITableViewCell {
     
     private func setPhoto(photoURL: String) {
         if let url = URL(string: photoURL) {
+            let cache = ImageCache(name: Constants.Storage.mediaCache)
+            let resizingProcessor = ResizingImageProcessor(referenceSize: CGSize(width: 200 * UIScreen.main.scale, height: 200 * UIScreen.main.scale), mode: .aspectFit)
+            
             self.photoImageView.kf.setImage(with: url,
                                      placeholder: UIImage(named: "placeholder_image"),
-                                     options: [ .transition(.fade(0.2)), .backgroundDecode])
+                                            options: [ .transition(.fade(0.2)), .backgroundDecode, .targetCache(cache), .processor(resizingProcessor)])
             self.photoImageView.contentMode = .scaleAspectFill
         } else {
             self.photoImageView.image = UIImage(named: "placeholder_image")

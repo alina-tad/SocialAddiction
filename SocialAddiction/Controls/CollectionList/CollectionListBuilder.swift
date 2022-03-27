@@ -16,7 +16,7 @@ class CollectionListBuilder {
     public var paginationActionHandler: (()-> ())? = nil
     
     // MARK: - Properties
-    fileprivate var controller : CollectionListViewController!
+    fileprivate var controller: CollectionListViewController!
     
     
     // MARK: - Init

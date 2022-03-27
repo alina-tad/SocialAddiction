@@ -10,17 +10,11 @@ import Kingfisher
 
 class KFManager {
     
-    class func storeToDisk(_ link: String) {
-        if let url = URL(string: link) {
-            if let data = try? Data(contentsOf: url) {
-                KingfisherManager.shared.cache.storeToDisk(data, forKey: link)
-            }
-        }
-    }
-    
+    //MARK: - Actions
     class func cleanCache() {
         KingfisherManager.shared.cache.clearMemoryCache()
         KingfisherManager.shared.cache.clearDiskCache()
+        ImageCache(name: "images_disk_cache").clearDiskCache(completion: nil)
     }
     
 }

@@ -10,15 +10,15 @@ import Foundation
 struct EndpointsList {
     
     struct User {
-        static let userNode: Endpoint<UserModel>          = Endpoint<UserModel>.make(Endpoints.User.userNode, .get)
+        static let userNode: Endpoint<UserModel>        = Endpoint<UserModel>.make(Endpoints.User.userNode, .get)
     }
     
     struct Media {
-        static let meMedia: Endpoint<ResultMediaModel>          = Endpoint<ResultMediaModel>.make(Endpoints.Media.meMedia, .get)
+        static let meMedia: Endpoint<ResultMediaModel>  = Endpoint<ResultMediaModel>.make(Endpoints.Media.meMedia, .get)
     }
     
     struct Auth {
-        static let getToken: Endpoint<AuthResponse>          = Endpoint<AuthResponse>.make(Endpoints.Auth.getToken, .post)
+        static let getToken: Endpoint<AuthResponse>     = Endpoint<AuthResponse>.make(Endpoints.Auth.getToken, .post)
     }
     
 }

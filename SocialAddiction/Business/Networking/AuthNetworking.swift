@@ -72,6 +72,7 @@ class AuthNetworking: NSObject {
                 cookieJar.deleteCookie(cookie)
             }
         }
+        KFManager.cleanCache()
     }
     
     //MARK: - Networking
