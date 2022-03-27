@@ -14,7 +14,7 @@ class KFManager {
     class func cleanCache() {
         KingfisherManager.shared.cache.clearMemoryCache()
         KingfisherManager.shared.cache.clearDiskCache()
-        ImageCache(name: "images_disk_cache").clearDiskCache(completion: nil)
+        ImageCache(name: Constants.Storage.mediaCache).clearDiskCache(completion: nil)
     }
     
 }
